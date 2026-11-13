@@ -102,3 +102,9 @@ SETTINGS = {
     "leads": {"serviceOptions": ["ERP Solutions", "Software Development", "Digital Marketing", "Business Automation", "Other"],
               "consentText": "I agree to be contacted about my enquiry and accept the Privacy Policy.", "privacyHref": "/privacy-policy", "notificationEmails": []},
 }
+
+
+# Richer copy for the main pages (kept in a separate module); same slugs, so it replaces the short placeholders above.
+from .seed_services import SERVICE_PAGES  # noqa: E402
+_by_slug = {p["slug"]: p for p in SERVICE_PAGES}
+PAGES = [_by_slug.get(p["slug"], p) for p in PAGES]
