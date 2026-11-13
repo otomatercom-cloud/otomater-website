@@ -119,4 +119,15 @@ INDUSTRIES = {"slug": "industries", "name": "Industries & Solutions", "nav": Tru
         item("Briefcase", "Service businesses", "Leads, projects, support tickets and renewals in one place.")], "3"),
     cta("cta_ind", "Not sure where you fit?", "Describe your business and we will tell you honestly what we can do."), LEAD]}
 
-SERVICE_PAGES = [HOME, ERP, SOFTWARE, MARKETING, INDUSTRIES]
+ABOUT = {"slug": "about", "name": "About Otomater", "nav": True, "summary": "Otomater builds ERP, custom software and digital marketing for growing organisations.", "blocks": [
+    hero("About Otomater", "We build the business systems, and the marketing, that growing organisations run on.", None, None, "Who we are"),
+    B("text_about", "richtext", {"heading": "Our company", "align": "left", "body": "Otomater provides ERP solutions, custom software, business automation and digital marketing.\n\nWe specialise in Odoo-based systems: we implement them, build custom modules and integrations around them, and connect them to your website, WhatsApp, payment gateways and devices. We also run digital marketing that feeds enquiries straight into your system, so every lead is followed up and measured.\n\nWe work with education institutions, retail and textile businesses, membership organisations and operations teams. In each case we start from how your people actually work, and build around that."}),
+    cards("cards_values", "How we work", "", [
+        item("CheckCircle2", "Practical first", "We recommend what solves your problem, not the biggest system."),
+        item("Workflow", "Built around your process", "We study how your team works before we configure or code anything."),
+        item("Handshake", "Clear communication", "Plain scope, honest timelines and regular progress updates."),
+        item("Headphones", "Support after launch", "Training, fixes and improvements once you are live.")], "4", background="muted"),
+    B("text_mission", "richtext", {"heading": "Mission and vision", "align": "left", "body": "**Mission.** To help organisations replace manual work with systems their teams actually use, and to bring in the enquiries that keep them growing.\n\n**Vision.** To be the dependable technology and growth partner for growing organisations."}),
+    cta("cta_about", "Work with us", "Tell us what you are trying to improve and we will suggest a practical next step.")]}
+
+SERVICE_PAGES = [HOME, ABOUT, ERP, SOFTWARE, MARKETING, INDUSTRIES]

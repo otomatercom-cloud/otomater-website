@@ -38,7 +38,7 @@ class OtmWebsiteSeed(models.AbstractModel):
         for p in PAGES:
             if slugs is not None and p["slug"] not in slugs:
                 continue
-            if slugs is None and p["slug"] not in ("home", "erp-solutions", "software-development", "digital-marketing", "industries"):
+            if slugs is None and p["slug"] not in ("home", "about", "erp-solutions", "software-development", "digital-marketing", "industries"):
                 continue
             page = Page.search([("slug", "=", p["slug"])], limit=1)
             if not page:
