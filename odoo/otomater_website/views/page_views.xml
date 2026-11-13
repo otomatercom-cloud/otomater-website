@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_otm_website_page_list" model="ir.ui.view">
+        <field name="name">otm.website.page.list</field>
+        <field name="model">otm.website.page</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/><field name="slug"/><field name="page_type"/>
+                <field name="status" widget="badge"/><field name="has_unpublished_changes"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_otm_website_page_form" model="ir.ui.view">
+        <field name="name">otm.website.page.form</field>
+        <field name="model">otm.website.page</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_publish" type="object" string="Publish" class="btn-primary" invisible="status == 'published' and not has_unpublished_changes"/>
+                    <button name="action_unpublish" type="object" string="Unpublish" invisible="status != 'published'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group name="grp_main">
+                        <group><field name="name"/><field name="slug"/><field name="page_type"/><field name="sequence"/></group>
+                        <group><field name="show_in_nav"/><field name="noindex"/><field name="has_unpublished_changes"/><field name="publication_date"/></group>
+                    </group>
+                    <notebook>
+                        <page string="SEO" name="page_seo">
+                            <group><field name="seo_title"/><field name="seo_description"/><field name="canonical_url"/><field name="summary"/></group>
+                        </page>
+                        <page string="Blocks (edit visually in the website admin)" name="page_blocks">
+                            <field name="block_ids" readonly="1">
+                                <list><field name="sequence"/><field name="key"/><field name="block_type"/><field name="visible"/></list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_otm_website_page" model="ir.actions.act_window">
+        <field name="name">Pages</field>
+        <field name="res_model">otm.website.page</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_otm_website_media_list" model="ir.ui.view">
+        <field name="name">otm.website.media.list</field>
+        <field name="model">otm.website.media</field>
+        <field name="arch" type="xml">
+            <list><field name="name"/><field name="mimetype"/><field name="width"/><field name="height"/><field name="file_size"/><field name="alt_text"/></list>
+        </field>
+    </record>
+    <record id="action_otm_website_media" model="ir.actions.act_window">
+        <field name="name">Media</field>
+        <field name="res_model">otm.website.media</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

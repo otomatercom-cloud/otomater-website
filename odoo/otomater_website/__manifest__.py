@@ -1,0 +1,21 @@
+{
+    "name": "Otomater Website CMS",
+    "version": "19.0.1.0.0",
+    "category": "Website/Customizations",
+    "summary": "Headless CMS + lead capture backend for the Otomater Next.js website",
+    "description": "Pages, blocks, global settings, media, leads and admin APIs consumed by the Otomater Next.js site. Depends on base only.",
+    "author": "Otomater",
+    "website": "https://otomater.com",
+    "license": "OPL-1",
+    "depends": ["base"],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "views/lead_views.xml",
+        "views/page_views.xml",
+        "views/menu.xml",
+        "data/seed.xml",
+    ],
+    "installable": True,
+    "application": True,
+}

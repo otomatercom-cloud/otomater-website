@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* Design tokens. Brand ink #283A4B is sampled from the supplied Otomater logo; the rest is built around it.
+   Admin > Theme overrides these CSS variables at runtime (see ThemeStyle). */
+@theme {
+  --color-brand-50: #f3f6f9;
+  --color-brand-100: #e4eaf0;
+  --color-brand-200: #c9d3dd;
+  --color-brand-300: #a0b0c0;
+  --color-brand-400: #6f869b;
+  --color-brand-500: #4a6178;
+  --color-brand-600: #374d62;
+  --color-brand-700: #283a4b;
+  --color-brand-800: #1e2c3a;
+  --color-brand-900: #141e29;
+  --color-accent-300: #5fd6c8;
+  --color-accent-400: #2cc0b0;
+  --color-accent-500: #19a595;
+  --color-accent-600: #0f8a7c;
+  --color-accent-700: #0b6f65;
+  --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 1.25rem;
+  --shadow-soft: 0 1px 2px rgb(20 30 41 / 0.06), 0 12px 32px -12px rgb(20 30 41 / 0.18);
+}
+
+:root { --section-y: 6rem; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans); color: var(--color-brand-800); background: #fff; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; color: var(--color-brand-900); }
+:focus-visible { outline: 3px solid var(--color-accent-500); outline-offset: 3px; border-radius: 6px; }
+.dark-surface :focus-visible { outline-color: var(--color-accent-300); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* Editor preview affordances (only present inside /preview iframe) */
+[data-preview] [data-block]{position:relative}
+[data-preview] [data-field]{cursor:pointer}
+[data-preview] [data-field]:hover{outline:2px dashed var(--color-accent-500);outline-offset:3px}
+[data-preview] [data-block]:hover{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--color-accent-500) 45%,transparent)}
+[data-preview] .ed-selected{outline:3px solid var(--color-accent-500)!important;outline-offset:3px}

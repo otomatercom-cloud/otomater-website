@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_page_editor,otm.website.page editor,model_otm_website_page,group_otm_website_editor,1,1,1,0
+access_page_admin,otm.website.page admin,model_otm_website_page,group_otm_website_admin,1,1,1,1
+access_block_editor,otm.website.block editor,model_otm_website_block,group_otm_website_editor,1,1,1,1
+access_setting_editor,otm.website.setting editor,model_otm_website_setting,group_otm_website_editor,1,1,1,0
+access_setting_admin,otm.website.setting admin,model_otm_website_setting,group_otm_website_admin,1,1,1,1
+access_media_editor,otm.website.media editor,model_otm_website_media,group_otm_website_editor,1,1,1,1
+access_lead_manager,otm.website.lead manager,model_otm_website_lead,group_otm_website_lead,1,1,0,0
+access_lead_admin,otm.website.lead admin,model_otm_website_lead,group_otm_website_admin,1,1,1,1
+access_throttle_admin,otm.website.throttle admin,model_otm_website_throttle,group_otm_website_admin,1,0,0,1

@@ -1,0 +1,27 @@
+# Otomater website – working notes
+
+Next.js 16 (App Router, TS, Tailwind 4, Framer Motion) frontend + one Odoo 19 addon `odoo/otomater_website` (depends on `base` only).
+Flow: Browser → Next.js server/API (BFF) → Odoo addon → PostgreSQL. The browser never talks to Odoo.
+
+## Commands
+- web: `cd web && npm i && npm run typecheck && npm test && npm run build`
+- odoo test: `odoo-bin -d <db> -u otomater_website --test-enable --test-tags /otomater_website --addons-path=...,<repo>/odoo`
+
+## Architecture decisions (keep short, add as we go)
+- Models use the Otomater convention `otm.website.*` (page, block, setting, media, lead, throttle) instead of the scope's suggested `otomater.website.*`; license OPL-1.
+- **Draft/publish**: blocks are the editable draft rows. Publishing freezes the whole page (meta + blocks) into `page.published_json`; public API reads only that snapshot, so drafts cannot leak into public cache. Settings use `draft_json` / `published_json` the same way.
+- Layout is saved atomically with `PUT /admin/pages/<id> {blocks:[…]}` (create/reorder/duplicate/delete are client-side list operations); block keys are stable ids.
+- Block schemas live in `web/src/features/cms/blocks.ts` (zod). Odoo validates type allowlist, key format, JSON object + size; Next validates fields and drops invalid blocks on read.
+- Rich text is a markdown subset rendered by our own parser (no raw HTML anywhere).
+- Home page slug is `home` (served at `/`). Slugs may nest up to 3 segments (`projects/acme`).
+- Next ↔ Odoo auth: shared `otomater_website.api_key` (Bearer) on every call + signed 8 h admin token (`X-Admin-Token`, dies on logout/password change/deactivation). Next keeps the token in an HttpOnly SameSite=Strict cookie. Odoo re-checks the group on every admin call.
+- Media: stored via `ir.attachment` (Binary attachment=True), served only through Odoo→Next `/media/<id>`; raster images only (no SVG); content-sniffed.
+- Leads: idempotency key, honeypot, per-IP rate limit (5 / 10 min) in `otm.website.throttle`, notification mail sent after commit (never loses the lead). Notification recipients are Odoo-only (stripped from the public API).
+- Logo: supplied PNG kept as `public/brand/otomater-logo-original.png`; `otomater-mark.png` is the same artwork with only the empty transparent margin trimmed. Brand ink `#283a4b` sampled from it.
+
+## Phases
+- [x] 0 inspect/plan  [x] 1 foundation  [x] 2 Odoo addon (17 tests pass on real Odoo 19)
+- [ ] 3 public site  [ ] 4 visual editor  [ ] 5 lead UI/admin  [ ] 6 verification + docs
+
+## Known issues / todo
+- Next admin login rate-limit (in-memory) comes with Phase 4; Odoo-side limit already exists.

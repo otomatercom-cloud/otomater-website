@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_otm_website_root" name="Otomater Website" sequence="60" groups="group_otm_website_editor,group_otm_website_lead"/>
+    <menuitem id="menu_otm_website_pages" name="Pages" parent="menu_otm_website_root" action="action_otm_website_page" sequence="10" groups="group_otm_website_editor"/>
+    <menuitem id="menu_otm_website_media" name="Media" parent="menu_otm_website_root" action="action_otm_website_media" sequence="20" groups="group_otm_website_editor"/>
+    <menuitem id="menu_otm_website_leads" name="Enquiries" parent="menu_otm_website_root" action="action_otm_website_lead" sequence="30" groups="group_otm_website_lead"/>
+</odoo>
