@@ -21,7 +21,12 @@ Flow: Browser → Next.js server/API (BFF) → Odoo addon → PostgreSQL. The br
 
 ## Phases
 - [x] 0 inspect/plan  [x] 1 foundation  [x] 2 Odoo addon (17 tests pass on real Odoo 19)
-- [ ] 3 public site  [ ] 4 visual editor  [ ] 5 lead UI/admin  [ ] 6 verification + docs
+- [x] 3 public site (e2e verified against real Odoo 19)  [ ] 4 visual editor  [ ] 5 lead UI/admin  [ ] 6 verification + docs
+
+- Public pages: `app/(site)/[[...slug]]`, `force-dynamic` render; Odoo data cached via fetch `revalidate` + tags (`otomater:site|pages|page:<slug>`), cleared by `POST /api/revalidate` (Bearer REVALIDATE_SECRET) or by Odoo after publish. Odoo down => cached data keeps serving; uncached page shows a controlled "temporarily unavailable" message (noindex), no invented copy. Empty blocks (stats/logos/testimonials/projects with no data) render nothing.
+- Blocks render on the server (`components/blocks/blocks.tsx`); only counter, lead form, header, reveal are client components. Sections carry `data-block=<key>`, editable texts `data-field=<name>` for the Phase 4 click-to-edit preview.
+- Lead API `/api/leads`: same-origin check, in-memory rate limit, honeypot (fake ok), zod, forwards client IP to Odoo.
 
 ## Known issues / todo
+- Uncached page while Odoo is down returns HTTP 200 with the fallback text (not 503); revisit if it matters for SEO.
 - Next admin login rate-limit (in-memory) comes with Phase 4; Odoo-side limit already exists.

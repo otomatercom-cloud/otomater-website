@@ -60,9 +60,12 @@ export const blockEnvelope = z.object({
   settings: blockSettings.default(blockSettings.parse({})), data: z.record(z.string(), z.unknown()),
 });
 
-export type Block<T extends BlockType = BlockType> = {
+export type BlockOf<T extends BlockType> = {
   key: string; type: T; visible: boolean; settings: BlockSettings; data: z.infer<(typeof blockData)[T]>;
 };
+
+/** Discriminated union: narrowing on `type` gives the exact `data` shape. */
+export type Block = { [K in BlockType]: BlockOf<K> }[BlockType];
 
 /** Validate one block; returns null when invalid so a bad block can never break a public page. */
 export function parseBlock(raw: unknown): Block | null {

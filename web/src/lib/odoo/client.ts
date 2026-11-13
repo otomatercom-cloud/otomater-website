@@ -13,6 +13,7 @@ type Opts = {
   revalidate?: number;
   tags?: string[];
   timeoutMs?: number;
+  headers?: Record<string, string>;
 };
 
 /** The only door to Odoo. Secrets stay here (server only); the browser never talks to Odoo. */
@@ -24,6 +25,7 @@ export async function odoo<T>(path: string, o: Opts = {}): Promise<OdooResult<T>
   const timer = setTimeout(() => ctrl.abort(), o.timeoutMs ?? e.CONTENT_TIMEOUT_MS);
   const headers: Record<string, string> = { Authorization: `Bearer ${e.ODOO_API_KEY}`, "Content-Type": "application/json" };
   if (o.adminToken) headers["X-Admin-Token"] = o.adminToken;
+  Object.assign(headers, o.headers);
   const isPublicRead = !o.adminToken && (o.method ?? "GET") === "GET" && o.revalidate !== undefined;
   try {
     const res = await fetch(url, {
