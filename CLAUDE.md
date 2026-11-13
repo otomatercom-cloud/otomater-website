@@ -21,7 +21,7 @@ Flow: Browser → Next.js server/API (BFF) → Odoo addon → PostgreSQL. The br
 
 ## Phases
 - [x] 0 inspect/plan  [x] 1 foundation  [x] 2 Odoo addon (17 tests pass on real Odoo 19)
-- [x] 3 public site (e2e verified against real Odoo 19)  [x] 4 visual editor  [ ] 5 lead UI/admin  [ ] 6 verification + docs
+- [x] 3 public site (e2e verified against real Odoo 19)  [x] 4 visual editor  [x] 5 lead UI/admin  [ ] 6 verification + docs
 
 - Public pages: `app/(site)/[[...slug]]`, `force-dynamic` render; Odoo data cached via fetch `revalidate` + tags (`otomater:site|pages|page:<slug>`), cleared by `POST /api/revalidate` (Bearer REVALIDATE_SECRET) or by Odoo after publish. Odoo down => cached data keeps serving; uncached page shows a controlled "temporarily unavailable" message (noindex), no invented copy. Empty blocks (stats/logos/testimonials/projects with no data) render nothing.
 - Blocks render on the server (`components/blocks/blocks.tsx`); only counter, lead form, header, reveal are client components. Sections carry `data-block=<key>`, editable texts `data-field=<name>` for the Phase 4 click-to-edit preview.
@@ -35,4 +35,4 @@ Flow: Browser → Next.js server/API (BFF) → Odoo addon → PostgreSQL. The br
 - Admin lives in Next: `/admin/login`, `(console)` shell (Pages, Global, Theme, SEO, Media, Users), full-screen builder at `/admin/edit/<id>`. All calls go browser → `/api/admin/*` proxy (HttpOnly cookie, per-method allowlist, origin check) → Odoo.
 - Builder: sortable sections (dnd-kit, keyboard works), schema-driven forms from `features/cms/editor-fields.ts`, iframe `/preview` fed by postMessage (same-origin only); clicking text/section in preview opens its field. Undo/redo coalesces typing (800 ms). Save draft / Publish / Unpublish are explicit; beforeunload guards unsaved work; zod + `parseBlock` run before save.
 - **Next 16 cache gotcha**: `revalidateTag(tag, "max")` is stale-while-revalidate and a 404 refetch is never cached, so unpublish/delete kept serving the old page. Use `revalidateTag(tag, { expire: 0 })` after admin actions. Also `pkill -f next-server` (not "next start") before restarting a prod server.
-- Not yet done: leads UI (`/admin/leads`, nav link exists), admin login rate-limit is in-memory, no browser/visual e2e of the builder yet (API + SSR smoke only).
+- Phase 5: `/admin/leads` (search, status filter, pagination, detail drawer with status + notes, CSV export through the proxy; Odoo guards formula injection). Not yet done: admin login rate-limit is in-memory, no browser/visual e2e of the builder.
