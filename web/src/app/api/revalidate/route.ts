@@ -11,6 +11,6 @@ export async function POST(req: NextRequest) {
   if (given.length !== want.length || !timingSafeEqual(given, want)) return NextResponse.json({ ok: false }, { status: 401 });
   const body = (await req.json().catch(() => null)) as { tags?: unknown } | null;
   const tags = Array.isArray(body?.tags) ? body.tags.filter((t): t is string => typeof t === "string" && TAG.test(t)).slice(0, 50) : [];
-  for (const t of tags) revalidateTag(t, "max");
+  for (const t of tags) revalidateTag(t, { expire: 0 });
   return NextResponse.json({ ok: true, revalidated: tags.length });
 }

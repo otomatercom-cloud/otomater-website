@@ -43,3 +43,16 @@ export async function odoo<T>(path: string, o: Opts = {}): Promise<OdooResult<T>
   }
 }
 export const CACHE_TAGS = { site: "otomater:site", pages: "otomater:pages", page: (slug: string) => `otomater:page:${slug}` } as const;
+
+/** Raw passthrough for the admin proxy (CSV export, exact Odoo status codes). Never cached. */
+export async function odooRaw(path: string, o: { method: string; token: string; body?: string; search?: string; ip?: string; timeoutMs?: number }): Promise<Response> {
+  const e = env();
+  const url = new URL(`${e.ODOO_BASE_URL.replace(/\/+$/, "")}/api/otomater/v1${path}`);
+  new URLSearchParams(o.search ?? "").forEach((v, k) => url.searchParams.set(k, v));
+  url.searchParams.set("db", e.ODOO_DATABASE);
+  const headers: Record<string, string> = { Authorization: `Bearer ${e.ODOO_API_KEY}`, "Content-Type": "application/json", "X-Admin-Token": o.token };
+  if (o.ip) headers["X-Client-IP"] = o.ip;
+  try {
+    return await fetch(url, { method: o.method, headers, body: o.body, cache: "no-store", signal: AbortSignal.timeout(o.timeoutMs ?? 20000) });
+  } catch { throw new OdooUnavailable("Odoo is unreachable"); }
+}
