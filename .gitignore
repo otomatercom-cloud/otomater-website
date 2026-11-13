@@ -5,3 +5,6 @@ node_modules
 *.tsbuildinfo
 __pycache__
 *.pyc
+
+.env.production
+.env.*.local
