@@ -5,7 +5,8 @@ import type { PageIndexItem, SiteData } from "@/lib/content";
 import { LeadForm } from "@/features/leads/lead-form";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
+import { Reveal } from "@/components/motion/reveal";
+import { SplitText } from "@/components/motion/split-text";
 import { cn } from "@/components/ui/cn";
 import { Counter } from "./counter";
 import { RichText } from "./rich-text";
@@ -26,7 +27,7 @@ function Img({ image, className, sizes = "100vw", priority }: { image: { media: 
 }
 const Head = ({ heading, intro, d, center }: { heading: string; intro?: string; d: boolean; center?: boolean }) => (heading || intro) ? (
   <Reveal className={cn("mb-12 max-w-3xl", center && "mx-auto text-center")}>
-    {heading && <h2 data-field="heading" className={cn("text-3xl font-bold sm:text-4xl", d && "!text-white")}>{heading}</h2>}
+    {heading && <SplitText as="h2" text={heading} data-field="heading" className={cn("text-3xl font-bold sm:text-4xl", d && "!text-white")} />}
     {intro && <p data-field="intro" className={cn("mt-4 text-lg", d ? "text-brand-200" : "text-brand-600")}>{intro}</p>}
   </Reveal>) : null;
 
@@ -50,19 +51,19 @@ function Hero({ block }: { block: B<"hero"> }) {
   return (
     <section data-block={block.key} id={block.settings.anchor || undefined} className={cn("dark-surface relative overflow-hidden bg-brand-900 text-white", block.settings.hideOn.map((h) => HIDE[h]))}>
       <div aria-hidden className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(var(--color-brand-300)_1px,transparent_1px),linear-gradient(90deg,var(--color-brand-300)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_70%)]" />
-      <div aria-hidden className="absolute -right-32 -top-32 h-[34rem] w-[34rem] rounded-full bg-accent-500/25 blur-[110px]" />
+      <div aria-hidden data-parallax="90" className="absolute -right-32 -top-32 h-[34rem] w-[34rem] rounded-full bg-accent-500/25 blur-[110px]" />
       <Container className={cn("relative grid items-center gap-12 py-20 sm:py-28", d.image.media && "lg:grid-cols-[1.1fr_0.9fr]")}>
-        <Reveal>
-          {d.eyebrow && <p data-field="eyebrow" className="mb-5 inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-accent-300">{d.eyebrow}</p>}
-          <h1 data-field="heading" className="max-w-3xl text-4xl font-extrabold leading-[1.08] !text-white sm:text-6xl">{d.heading}</h1>
-          {d.subheading && <p data-field="subheading" className="mt-6 max-w-2xl text-lg text-brand-200 sm:text-xl">{d.subheading}</p>}
+        <div>
+          {d.eyebrow && <Reveal as="p" y={16} data-field="eyebrow" className="mb-5 inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-accent-300">{d.eyebrow}</Reveal>}
+          <SplitText as="h1" text={d.heading} delay={0.1} step={60} data-field="heading" className="max-w-3xl text-4xl font-extrabold leading-[1.08] !text-white sm:text-6xl" />
+          {d.subheading && <Reveal as="p" delay={0.45} data-field="subheading" className="mt-6 max-w-2xl text-lg text-brand-200 sm:text-xl">{d.subheading}</Reveal>}
           {(d.primaryCta?.label || d.secondaryCta?.label) && (
-            <div className="mt-9 flex flex-wrap gap-3">
+            <Reveal delay={0.6} className="mt-9 flex flex-wrap gap-3">
               {d.primaryCta?.label && <ButtonLink href={d.primaryCta.href} data-field="primaryCta">{d.primaryCta.label}</ButtonLink>}
               {d.secondaryCta?.label && <ButtonLink href={d.secondaryCta.href} variant="onDark" data-field="secondaryCta">{d.secondaryCta.label}</ButtonLink>}
-            </div>)}
-          {d.highlights.length > 0 && <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">{d.highlights.map((h) => <li key={h} className="flex items-center gap-2"><Icons.CheckCircle2 size={16} className="text-accent-300" aria-hidden />{h}</li>)}</ul>}
-        </Reveal>
+            </Reveal>)}
+          {d.highlights.length > 0 && <Reveal as="ul" delay={0.7} y={16} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">{d.highlights.map((h) => <li key={h} className="flex items-center gap-2"><Icons.CheckCircle2 size={16} className="text-accent-300" aria-hidden />{h}</li>)}</Reveal>}
+        </div>
         {d.image.media && <Reveal delay={0.15}><Img image={d.image} priority sizes="(min-width:1024px) 45vw, 100vw" className="aspect-[4/3] w-full rounded-[var(--radius-card)] object-cover shadow-soft ring-1 ring-white/10" /></Reveal>}
       </Container>
     </section>
@@ -128,11 +129,11 @@ export function BlockView({ block, ctx }: { block: Block; ctx: Ctx }) {
       <div className="mt-8 flex flex-wrap justify-center gap-3">{x.buttons.map((b, i) => <ButtonLink key={i} href={b.href} variant={b.style}>{b.label}</ButtonLink>)}</div></Reveal></Container></Section>; }
     case "cards": { const x = (block as B<"cards">).data; if (!x.items.length) return null; return <Section block={block}><Container>
       <Head heading={x.heading} intro={x.intro} d={d} /><div className={cn("grid gap-6", COLS[x.columns])}>{x.items.map((it, i) => {
-        const inner = <><div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-600/10 text-accent-700"><Icon name={it.icon || "Sparkles"} className="h-6 w-6" /></div>
+        const inner = <><div data-draw data-hover-icon className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-600/10 text-accent-700"><Icon name={it.icon || "Sparkles"} className="h-6 w-6" /></div>
           <h3 className="text-xl font-bold text-brand-900">{it.title}</h3><p className="mt-2 text-brand-600">{it.text}</p>
           {it.href && <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent-700">Learn more <Icons.ArrowRight size={16} aria-hidden /></span>}</>;
-        const cls = "block h-full rounded-[var(--radius-card)] border border-brand-100 bg-white p-7 shadow-soft transition hover:-translate-y-1";
-        return <Reveal key={i} delay={Math.min(i, 5) * 0.06}>{it.href ? <a href={it.href} className={cls} data-item={i}>{inner}</a> : <div className={cls} data-item={i}>{inner}</div>}</Reveal>; })}</div></Container></Section>; }
+        const cls = "block h-full rounded-[var(--radius-card)] border border-brand-100 bg-white p-7 shadow-soft transition-shadow hover:shadow-lg";
+        return <Reveal key={i} delay={Math.min(i, 5) * 0.06}>{it.href ? <a href={it.href} className={cls} data-item={i} data-hover="lift">{inner}</a> : <div className={cls} data-item={i} data-hover="lift">{inner}</div>}</Reveal>; })}</div></Container></Section>; }
     case "stats": { const x = (block as B<"stats">).data; if (!x.items.length) return null; return <Section block={block}><Container><Head heading={x.heading} d={d} center />
       <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">{x.items.map((it, i) => <Reveal key={i} className="text-center"><dd className={cn("font-display text-5xl font-extrabold", d ? "text-accent-300" : "text-accent-700")}><Counter prefix={it.prefix} value={it.value} suffix={it.suffix} /></dd><dt className="mt-2 opacity-80">{it.label}</dt></Reveal>)}</dl></Container></Section>; }
     case "logos": { const x = (block as B<"logos">).data; if (!x.items.length) return null; return <Section block={block}><Container><Head heading={x.heading} d={d} center />

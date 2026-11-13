@@ -1,8 +1,6 @@
-"use client";
-import { motion, useReducedMotion } from "framer-motion";
+import { SiteMotion } from "@/components/motion/site-motion";
 
-/** Soft page transition; skipped entirely for reduced-motion users. */
+/** Re-mounts on every navigation, which replays the page entrance. */
 export default function Template({ children }: { children: React.ReactNode }) {
-  const reduce = useReducedMotion();
-  return reduce ? <>{children}</> : <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>{children}</motion.div>;
+  return <SiteMotion>{children}</SiteMotion>;
 }

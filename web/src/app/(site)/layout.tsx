@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ThemeStyle } from "@/components/layout/theme-style";
+import { HoverMotion } from "@/components/motion/hover-motion";
 import { getSite } from "@/lib/content";
 
 export const dynamic = "force-dynamic"; // render per request; Odoo data itself is cached/tagged (ISR + on-demand revalidation)
@@ -12,6 +13,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <>
       <ThemeStyle t={settings.theme} />
+      <HoverMotion />
       <Header site={settings.site} nav={settings.navigation} />
       <main id="main">{children}</main>
       <Footer s={settings} />
