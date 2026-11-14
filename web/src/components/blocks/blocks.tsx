@@ -10,7 +10,8 @@ import { SplitText } from "@/components/motion/split-text";
 import { cn } from "@/components/ui/cn";
 import { Counter } from "./counter";
 import { HeroSlideshow } from "./hero-slideshow";
-import { AutomationDiagram, Typewriter, ACCENT } from "./automation";
+import { AutomationDiagram, Typewriter } from "./automation";
+import { ACCENT } from "./accent";
 import { RichText } from "./rich-text";
 
 type Ctx = { site: SiteData; pageSlug: string };
