@@ -152,7 +152,7 @@ export function BlockView({ block, ctx }: { block: Block; ctx: Ctx }) {
         <Container className={cn("relative grid items-center gap-14 py-20 sm:py-28", x.nodes.length > 0 && "lg:grid-cols-2")}>
           <div>
             {x.eyebrow && <Reveal as="p" y={16} data-field="eyebrow" className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-accent-300"><span aria-hidden className="h-2 w-2 rounded-full bg-accent-400" />{x.eyebrow}</Reveal>}
-            <h2 className="max-w-3xl text-4xl font-extrabold leading-[1.08] !text-white sm:text-6xl"><span data-field="prefix">{x.prefix}</span>{x.words.length > 0 && <><br /><Typewriter words={x.words} /></>}</h2>
+            <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.08] !text-white sm:text-6xl"><span data-field="prefix">{x.prefix}</span>{x.words.length > 0 && <><br /><Typewriter words={x.words} /></>}</h1>
             {x.subheading && <Reveal as="p" delay={0.3} data-field="subheading" className="mt-6 max-w-xl text-lg text-brand-200">{x.subheading}</Reveal>}
             {(x.primaryCta?.label || x.secondaryCta?.label) && <Reveal delay={0.45} className="mt-9 flex flex-wrap gap-3">
               {x.primaryCta?.label && <ButtonLink href={x.primaryCta.href} data-field="primaryCta">{x.primaryCta.label}</ButtonLink>}

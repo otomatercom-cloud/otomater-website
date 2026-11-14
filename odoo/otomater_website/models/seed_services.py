@@ -19,9 +19,9 @@ def ncard(icon, title, tagline, text, points, accent):
 
 
 AUTOMATION = B("automation_main", "automation", {
-    "eyebrow": "360° Automation Platform", "prefix": "Automate Your",
+    "eyebrow": "ERP · Software · Digital marketing", "prefix": "Automate Your",
     "words": ["CRM", "Lead Management", "WhatsApp Business", "ERP"],
-    "subheading": "One connected system to manage customers, capture leads, follow up on WhatsApp and run your operations, with the repeat work automated.",
+    "subheading": "Otomater helps businesses run better with Odoo-based ERP, custom software and automation, and grow with digital marketing that brings in real enquiries.",
     "primaryCta": CONTACT_CTA, "secondaryCta": {"label": "See what we do", "href": "#services"},
     "hubLabel": "360°", "hubCaption": "Platform",
     "nodes": [{"label": "CRM", "value": "", "caption": "customers", "accent": "blue"}, {"label": "LEAD", "value": "", "caption": "enquiries", "accent": "cyan"},
@@ -34,9 +34,6 @@ SOLUTIONS = B("cards_solutions", "cards", {"heading": "Four solutions, one conne
     ncard("Boxes", "ERP Solution", "Unify your operations", "One system for finance, inventory, HR and purchasing, so every team works from the same data.", ["Finance and accounting", "Inventory control", "HR and payroll", "Live dashboards"], "amber")]}, background="muted")
 
 HOME = {"slug": "home", "name": "Home", "summary": "ERP solutions, custom software and digital marketing for growing businesses.", "blocks": [
-    hero("ERP, software and digital marketing, built around how you work",
-         "Otomater helps businesses run better with Odoo-based ERP, custom software and automation, and grow with digital marketing that brings in real enquiries.",
-         CONTACT_CTA, {"label": "See what we do", "href": "#services"}, "ERP · Software · Digital marketing"),
     AUTOMATION,
     SOLUTIONS,
     cards("cards_services", "What we do", "Three connected services. Use one, or combine them.", [
