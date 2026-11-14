@@ -14,10 +14,31 @@ def cta(key, heading, body):
     return B(key, "cta", {"heading": heading, "body": body, "buttons": [dict(CONTACT_CTA, style="primary")]})
 
 
+def ncard(icon, title, tagline, text, points, accent):
+    return {"icon": icon, "title": title, "tagline": tagline, "text": text, "points": points, "accent": accent, "href": ""}
+
+
+AUTOMATION = B("automation_main", "automation", {
+    "eyebrow": "360° Automation Platform", "prefix": "Automate Your",
+    "words": ["CRM", "Lead Management", "WhatsApp Business", "ERP"],
+    "subheading": "One connected system to manage customers, capture leads, follow up on WhatsApp and run your operations, with the repeat work automated.",
+    "primaryCta": CONTACT_CTA, "secondaryCta": {"label": "See what we do", "href": "#services"},
+    "hubLabel": "360°", "hubCaption": "Platform",
+    "nodes": [{"label": "CRM", "value": "", "caption": "customers", "accent": "blue"}, {"label": "LEAD", "value": "", "caption": "enquiries", "accent": "cyan"},
+              {"label": "WA", "value": "", "caption": "conversations", "accent": "green"}, {"label": "ERP", "value": "", "caption": "operations", "accent": "amber"}]})
+
+SOLUTIONS = B("cards_solutions", "cards", {"heading": "Four solutions, one connected platform", "intro": "Start with the one you need most. They share the same data.", "columns": "4", "numbered": True, "items": [
+    ncard("Users", "CRM Solution", "Build lasting relationships", "Keep every customer interaction in one place. Track deals, automate follow-ups and see your sales pipeline clearly.", ["360° customer view", "Sales pipeline automation", "Activity tracking", "Revenue forecasting"], "blue"),
+    ncard("Zap", "Lead Management", "Capture. Score. Convert.", "Capture leads from every channel, qualify them and route each one to the right person without delay.", ["Multi-channel capture", "Lead scoring", "Automated nurturing", "Conversion reports"], "cyan"),
+    ncard("MessageCircle", "WhatsApp Business", "Engage at scale", "Run campaigns, chatbots and support conversations on WhatsApp from one dashboard.", ["Bulk campaigns", "Chatbot", "Template messages", "Two-way support"], "green"),
+    ncard("Boxes", "ERP Solution", "Unify your operations", "One system for finance, inventory, HR and purchasing, so every team works from the same data.", ["Finance and accounting", "Inventory control", "HR and payroll", "Live dashboards"], "amber")]}, background="muted")
+
 HOME = {"slug": "home", "name": "Home", "summary": "ERP solutions, custom software and digital marketing for growing businesses.", "blocks": [
     hero("ERP, software and digital marketing, built around how you work",
          "Otomater helps businesses run better with Odoo-based ERP, custom software and automation, and grow with digital marketing that brings in real enquiries.",
          CONTACT_CTA, {"label": "See what we do", "href": "#services"}, "ERP · Software · Digital marketing"),
+    AUTOMATION,
+    SOLUTIONS,
     cards("cards_services", "What we do", "Three connected services. Use one, or combine them.", [
         item("Boxes", "ERP Solutions", "Odoo implementation, custom modules, data migration and training, so one system runs sales, accounts, stock, HR and more.", "/erp-solutions"),
         item("Code2", "Software Development", "Web applications, customer and vendor portals, integrations and workflow automation built for your process.", "/software-development"),

@@ -2,11 +2,13 @@ import { z } from "zod";
 import { buttonSchema, hrefSchema, iconSchema, imageSchema, linkSchema, richTextSchema, videoIdOk, VIDEO_PROVIDERS } from "./safe";
 
 const t = (max = 200) => z.string().max(max).default("");
+export const ACCENTS = ["default", "blue", "cyan", "green", "amber"] as const;
+const accent = z.enum(ACCENTS).default("default");
 const item = <T extends z.ZodRawShape>(shape: T, max = 24) => z.array(z.object(shape)).max(max).default([]);
 
 export const BLOCK_TYPES = [
   "hero", "richtext", "image_text", "cta", "cards", "stats", "logos", "testimonials",
-  "projects", "faq", "gallery", "lead_form", "spacer", "video",
+  "projects", "faq", "gallery", "lead_form", "spacer", "video", "automation",
 ] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
 
@@ -24,8 +26,14 @@ export const blockData = {
   }),
   cta: z.object({ heading: t(160), body: t(400), buttons: z.array(buttonSchema).max(3).default([]) }),
   cards: z.object({
-    heading: t(160), intro: t(400), columns: z.enum(["2", "3", "4"]).default("3"),
-    items: item({ icon: iconSchema, title: t(100), text: t(500), href: hrefSchema.default("") }),
+    heading: t(160), intro: t(400), columns: z.enum(["2", "3", "4"]).default("3"), numbered: z.boolean().default(false),
+    items: item({ icon: iconSchema, title: t(100), text: t(500), href: hrefSchema.default(""), tagline: t(80), accent, points: z.array(z.string().max(80)).max(6).default([]) }),
+  }),
+  automation: z.object({
+    eyebrow: t(80), prefix: t(80), words: z.array(z.string().max(40)).max(8).default([]), subheading: t(400),
+    primaryCta: linkSchema.nullable().default(null), secondaryCta: linkSchema.nullable().default(null),
+    hubLabel: t(20), hubCaption: t(24),
+    nodes: item({ label: t(10), value: t(12), caption: t(24), accent }, 4),
   }),
   stats: z.object({
     heading: t(160),
@@ -86,5 +94,5 @@ export const newKey = () => `b_${Math.random().toString(36).slice(2, 10)}`;
 export const BLOCK_LABELS: Record<BlockType, string> = {
   hero: "Hero / banner", richtext: "Heading & text", image_text: "Image with text", cta: "Call to action",
   cards: "Service / feature cards", stats: "Statistics", logos: "Logo strip", testimonials: "Testimonials",
-  projects: "Case-study cards", faq: "FAQ", gallery: "Gallery", lead_form: "Enquiry form", spacer: "Spacer / divider", video: "Video",
+  projects: "Case-study cards", faq: "FAQ", gallery: "Gallery", lead_form: "Enquiry form", spacer: "Spacer / divider", video: "Video", automation: "Automation hero (typing + live diagram)",
 };

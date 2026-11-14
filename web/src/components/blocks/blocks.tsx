@@ -10,6 +10,7 @@ import { SplitText } from "@/components/motion/split-text";
 import { cn } from "@/components/ui/cn";
 import { Counter } from "./counter";
 import { HeroSlideshow } from "./hero-slideshow";
+import { AutomationDiagram, Typewriter, ACCENT } from "./automation";
 import { RichText } from "./rich-text";
 
 type Ctx = { site: SiteData; pageSlug: string };
@@ -132,11 +133,33 @@ export function BlockView({ block, ctx }: { block: Block; ctx: Ctx }) {
       <div className="mt-8 flex flex-wrap justify-center gap-3">{x.buttons.map((b, i) => <ButtonLink key={i} href={b.href} variant={b.style}>{b.label}</ButtonLink>)}</div></Reveal></Container></Section>; }
     case "cards": { const x = (block as B<"cards">).data; if (!x.items.length) return null; return <Section block={block}><Container>
       <Head heading={x.heading} intro={x.intro} d={d} /><div className={cn("grid gap-6", COLS[x.columns])}>{x.items.map((it, i) => {
-        const inner = <><div data-draw data-hover-icon className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-600/10 text-accent-700"><Icon name={it.icon || "Sparkles"} className="h-6 w-6" /></div>
-          <h3 className="text-xl font-bold text-brand-900">{it.title}</h3><p className="mt-2 text-brand-600">{it.text}</p>
+        const ac = ACCENT[it.accent];
+        const inner = <>
+          {x.numbered && <span aria-hidden className={cn("absolute right-6 top-5 font-display text-4xl font-bold opacity-20", ac.text)}>{String(i + 1).padStart(2, "0")}</span>}
+          <div data-draw data-hover-icon className={cn("mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1", ac.tile)}><Icon name={it.icon || "Sparkles"} className="h-6 w-6" /></div>
+          <h3 className="text-xl font-bold text-brand-900">{it.title}</h3>
+          {it.tagline && <p className={cn("mt-1 text-xs font-semibold uppercase tracking-wide", ac.text)}>{it.tagline}</p>}
+          <p className="mt-3 text-brand-600">{it.text}</p>
+          {it.points.length > 0 && <ul className="mt-5 space-y-2 text-sm text-brand-800">{it.points.map((pt) => <li key={pt} className="flex items-center gap-2"><span className={cn("flex h-4 w-4 shrink-0 items-center justify-center rounded-full", ac.dot)}><Icons.Check size={10} strokeWidth={3} aria-hidden /></span>{pt}</li>)}</ul>}
           {it.href && <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent-700">Learn more <Icons.ArrowRight size={16} aria-hidden /></span>}</>;
-        const cls = "block h-full rounded-[var(--radius-card)] border border-brand-100 bg-white p-7 shadow-soft transition-shadow hover:shadow-lg";
+        const cls = "relative block h-full rounded-[var(--radius-card)] border border-brand-100 bg-white p-7 shadow-soft transition-shadow hover:shadow-lg";
         return <Reveal key={i} delay={Math.min(i, 5) * 0.06}>{it.href ? <a href={it.href} className={cls} data-item={i} data-hover="lift">{inner}</a> : <div className={cls} data-item={i} data-hover="lift">{inner}</div>}</Reveal>; })}</div></Container></Section>; }
+    case "automation": { const x = (block as B<"automation">).data; return (
+      <section data-block={block.key} id={block.settings.anchor || undefined} className={cn("dark-surface relative overflow-hidden bg-brand-900 text-white", block.settings.hideOn.map((h) => HIDE[h]))}>
+        <div aria-hidden className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(var(--color-brand-300)_1px,transparent_1px),linear-gradient(90deg,var(--color-brand-300)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_70%)]" />
+        <div aria-hidden data-parallax="80" className="absolute -right-24 -top-24 h-[30rem] w-[30rem] rounded-full bg-accent-500/25 blur-[110px]" />
+        <Container className={cn("relative grid items-center gap-14 py-20 sm:py-28", x.nodes.length > 0 && "lg:grid-cols-2")}>
+          <div>
+            {x.eyebrow && <Reveal as="p" y={16} data-field="eyebrow" className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-accent-300"><span aria-hidden className="h-2 w-2 rounded-full bg-accent-400" />{x.eyebrow}</Reveal>}
+            <h2 className="max-w-3xl text-4xl font-extrabold leading-[1.08] !text-white sm:text-6xl"><span data-field="prefix">{x.prefix}</span>{x.words.length > 0 && <><br /><Typewriter words={x.words} /></>}</h2>
+            {x.subheading && <Reveal as="p" delay={0.3} data-field="subheading" className="mt-6 max-w-xl text-lg text-brand-200">{x.subheading}</Reveal>}
+            {(x.primaryCta?.label || x.secondaryCta?.label) && <Reveal delay={0.45} className="mt-9 flex flex-wrap gap-3">
+              {x.primaryCta?.label && <ButtonLink href={x.primaryCta.href} data-field="primaryCta">{x.primaryCta.label}</ButtonLink>}
+              {x.secondaryCta?.label && <ButtonLink href={x.secondaryCta.href} variant="onDark" data-field="secondaryCta">{x.secondaryCta.label}</ButtonLink>}</Reveal>}
+          </div>
+          {x.nodes.length > 0 && <AutomationDiagram hubLabel={x.hubLabel} hubCaption={x.hubCaption} nodes={x.nodes} />}
+        </Container>
+      </section>); }
     case "stats": { const x = (block as B<"stats">).data; if (!x.items.length) return null; return <Section block={block}><Container><Head heading={x.heading} d={d} center />
       <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">{x.items.map((it, i) => <Reveal key={i} className="text-center"><dd className={cn("font-display text-5xl font-extrabold", d ? "text-accent-300" : "text-accent-700")}><Counter prefix={it.prefix} value={it.value} suffix={it.suffix} /></dd><dt className="mt-2 opacity-80">{it.label}</dt></Reveal>)}</dl></Container></Section>; }
     case "logos": { const x = (block as B<"logos">).data; if (!x.items.length) return null; return <Section block={block}><Container><Head heading={x.heading} d={d} center />

@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 _logger = logging.getLogger(__name__)
 
 BLOCK_TYPES = ["hero", "richtext", "image_text", "cta", "cards", "stats", "logos", "testimonials",
-               "projects", "faq", "gallery", "lead_form", "spacer", "video"]
+               "projects", "faq", "gallery", "lead_form", "spacer", "video", "automation"]
 PAGE_TYPES = ["standard", "service", "industry", "project", "post", "legal"]
 SETTING_GROUPS = ["site", "navigation", "footer", "contact", "social", "theme", "seo", "leads"]
 # keys that must never leave Odoo through the public API

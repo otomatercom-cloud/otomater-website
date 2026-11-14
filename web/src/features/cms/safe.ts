@@ -11,7 +11,7 @@ export const imageSchema = z.object({ media: z.number().int().positive().nullabl
 export const mediaUrl = (id: number | null | undefined) => (id ? `/media/${id}` : "");
 
 /** Lucide icons the editor may offer (allowlist keeps the bundle small and input safe). */
-export const ICON_NAMES = [
+export const ICON_NAMES = ["MessageCircle", 
   "Workflow", "Boxes", "Code2", "Megaphone", "LineChart", "ShieldCheck", "Layers", "Cog", "Database", "Cloud", "Cpu",
   "Globe", "Rocket", "Target", "Users", "Handshake", "Zap", "Search", "Mail", "Phone", "BarChart3", "Briefcase",
   "Factory", "ShoppingCart", "GraduationCap", "Stethoscope", "Truck", "Building2", "Banknote", "Sparkles", "Wrench",
