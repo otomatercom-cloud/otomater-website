@@ -9,6 +9,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { SplitText } from "@/components/motion/split-text";
 import { cn } from "@/components/ui/cn";
 import { Counter } from "./counter";
+import { HeroSlideshow } from "./hero-slideshow";
 import { RichText } from "./rich-text";
 
 type Ctx = { site: SiteData; pageSlug: string };
@@ -48,11 +49,12 @@ function Section({ block, children, flush }: { block: Block; children: React.Rea
 
 function Hero({ block }: { block: B<"hero"> }) {
   const d = block.data;
+  const slides = [d.image, ...d.slides.map((x) => x.image)].filter((x) => x.media).map((x) => ({ src: mediaUrl(x.media as number), alt: x.alt }));
   return (
     <section data-block={block.key} id={block.settings.anchor || undefined} className={cn("dark-surface relative overflow-hidden bg-brand-900 text-white", block.settings.hideOn.map((h) => HIDE[h]))}>
       <div aria-hidden className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(var(--color-brand-300)_1px,transparent_1px),linear-gradient(90deg,var(--color-brand-300)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_70%)]" />
       <div aria-hidden data-parallax="90" className="absolute -right-32 -top-32 h-[34rem] w-[34rem] rounded-full bg-accent-500/25 blur-[110px]" />
-      <Container className={cn("relative grid items-center gap-12 py-20 sm:py-28", d.image.media && "lg:grid-cols-[1.1fr_0.9fr]")}>
+      <Container className={cn("relative grid items-center gap-12 py-20 sm:py-28", slides.length > 0 && "lg:grid-cols-[1.1fr_0.9fr]")}>
         <div>
           {d.eyebrow && <Reveal as="p" y={16} data-field="eyebrow" className="mb-5 inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-accent-300">{d.eyebrow}</Reveal>}
           <SplitText as="h1" text={d.heading} delay={0.1} step={60} data-field="heading" className="max-w-3xl text-4xl font-extrabold leading-[1.08] !text-white sm:text-6xl" />
@@ -64,7 +66,8 @@ function Hero({ block }: { block: B<"hero"> }) {
             </Reveal>)}
           {d.highlights.length > 0 && <Reveal as="ul" delay={0.7} y={16} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">{d.highlights.map((h) => <li key={h} className="flex items-center gap-2"><Icons.CheckCircle2 size={16} className="text-accent-300" aria-hidden />{h}</li>)}</Reveal>}
         </div>
-        {d.image.media && <Reveal delay={0.15}><Img image={d.image} priority sizes="(min-width:1024px) 45vw, 100vw" className="aspect-[4/3] w-full rounded-[var(--radius-card)] object-cover shadow-soft ring-1 ring-white/10" /></Reveal>}
+        {slides.length > 1 ? <Reveal delay={0.15}><HeroSlideshow slides={slides} /></Reveal>
+          : slides.length === 1 && <Reveal delay={0.15}><Img image={d.image.media ? d.image : { media: d.slides[0].image.media, alt: d.slides[0].image.alt }} priority sizes="(min-width:1024px) 45vw, 100vw" className="aspect-[4/3] w-full rounded-[var(--radius-card)] object-cover shadow-soft ring-1 ring-white/10" /></Reveal>}
       </Container>
     </section>
   );

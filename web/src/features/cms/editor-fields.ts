@@ -25,7 +25,7 @@ const cols: FieldDef = { name: "columns", label: "Columns", kind: "select", opti
 const ICONS: [string, string][] = [["", "None"], ...ICON_NAMES.map((n) => [n, n] as [string, string])];
 
 export const BLOCK_FIELDS: Record<BlockType, FieldDef[]> = {
-  hero: [t("eyebrow", "Small label above heading", 80), t("heading", "Heading", 160), area("subheading", "Sub-heading"), link("primaryCta", "Primary button"), link("secondaryCta", "Secondary button"), img(), { name: "highlights", label: "Highlight points", kind: "strings", max: 6 }],
+  hero: [t("eyebrow", "Small label above heading", 80), t("heading", "Heading", 160), area("subheading", "Sub-heading"), link("primaryCta", "Primary button"), link("secondaryCta", "Secondary button"), img(), { name: "slides", label: "More slides (optional - turns the picture into a slideshow)", kind: "list", itemLabel: "Slide", titleKey: "image.alt", max: 5, blank: { image: { media: null, alt: "" } }, fields: [img()] }, { name: "highlights", label: "Highlight points", kind: "strings", max: 6 }],
   richtext: [t("heading", "Heading", 160), rich("body", "Text"), { name: "align", label: "Alignment", kind: "select", options: [["left", "Left"], ["center", "Centre"]] }],
   image_text: [t("heading", "Heading", 160), rich("body", "Text"), img(), { name: "imagePosition", label: "Image position", kind: "select", options: [["right", "Right"], ["left", "Left"]] }, link("cta", "Button")],
   cta: [t("heading", "Heading", 160), area("body", "Text"), { name: "buttons", label: "Buttons", kind: "list", itemLabel: "Button", titleKey: "label", max: 3, blank: { label: "Button", href: "/contact", style: "primary" },

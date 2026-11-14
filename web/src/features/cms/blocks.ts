@@ -15,6 +15,7 @@ export const blockData = {
     eyebrow: t(80), heading: t(160), subheading: t(400),
     primaryCta: linkSchema.nullable().default(null), secondaryCta: linkSchema.nullable().default(null),
     image: imageSchema.default({ media: null, alt: "" }), highlights: z.array(z.string().max(80)).max(6).default([]),
+    slides: item({ image: imageSchema.default({ media: null, alt: "" }) }, 5),
   }),
   richtext: z.object({ heading: t(160), body: richTextSchema, align: z.enum(["left", "center"]).default("left") }),
   image_text: z.object({
