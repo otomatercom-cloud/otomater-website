@@ -15,6 +15,10 @@ describe("server render of new blocks", () => {
     Object.assign(demo.data, { heading: "Try", steps: [{ label: "Enquiry captured", caption: "c" }, { label: "WhatsApp", caption: "c" }] });
     const dctx = { site: { settings: { leads: { consentText: "I agree", privacyHref: "" } } } as never, pageSlug: "home" };
     expect(renderToString(createElement(BlockView, { block: demo, ctx: dctx }))).toContain("Sample");
+    const gal = blankBlock("gallery", "g1");
+    Object.assign(gal.data, { frame: true, items: [{ image: { media: 5, alt: "a" }, caption: "EduOS dashboard", category: "EduOS" }, { image: { media: 6, alt: "b" }, caption: "CRM", category: "CRM" }] });
+    const gh = renderToString(createElement(BlockView, { block: gal, ctx }));
+    expect(gh).toContain("EduOS dashboard"); expect(gh).toContain("/media/5"); expect(gh).toContain("Filter screenshots");
     for (const b of [cards, auto]) {
       const html = renderToString(createElement(BlockView, { block: b, ctx }));
       expect(html.length).toBeGreaterThan(200);

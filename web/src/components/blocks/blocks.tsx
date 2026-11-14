@@ -13,6 +13,7 @@ import { HeroSlideshow } from "./hero-slideshow";
 import { AutomationDiagram, Typewriter } from "./automation";
 import { ACCENT } from "./accent";
 import { AutomationDemo } from "./automation-demo";
+import { Gallery } from "./gallery";
 import { RichText } from "./rich-text";
 
 type Ctx = { site: SiteData; pageSlug: string };
@@ -178,8 +179,8 @@ export function BlockView({ block, ctx }: { block: Block; ctx: Ctx }) {
       <div className="divide-y divide-brand-200 rounded-[var(--radius-card)] border border-brand-100 bg-white text-brand-900">{x.items.map((it, i) => <details key={i} className="group p-6" data-item={i}>
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold">{it.question}<Icons.ChevronDown className="shrink-0 transition group-open:rotate-180" aria-hidden /></summary>
         <RichText value={it.answer} className="mt-4 !text-base text-brand-700" /></details>)}</div></Container></Section>; }
-    case "gallery": { const x = (block as B<"gallery">).data; if (!x.items.length) return null; return <Section block={block}><Container><Head heading={x.heading} d={d} />
-      <div className={cn("grid gap-4", COLS[x.columns])}>{x.items.map((it, i) => <Reveal key={i}><Img image={it.image} sizes="(min-width:1024px) 33vw, 100vw" className="aspect-[4/3] w-full rounded-2xl object-cover" /></Reveal>)}</div></Container></Section>; }
+    case "gallery": { const x = (block as B<"gallery">).data; const items = x.items.filter((it) => it.image.media).map((it) => ({ src: mediaUrl(it.image.media as number), alt: it.image.alt || it.caption, caption: it.caption, category: it.category })); if (!items.length) return null;
+      return <Section block={block}><Container><Head heading={x.heading} intro={x.intro} d={d} /><Gallery items={items} columns={x.columns} frame={x.frame} dark={d} /></Container></Section>; }
     case "lead_form": return <LeadBlock block={block as B<"lead_form">} ctx={ctx} />;
     case "spacer": { const x = (block as B<"spacer">).data; return <div data-block={block.key} className={cn(BG[block.settings.background], block.settings.hideOn.map((h) => HIDE[h]))} style={{ height: { sm: 24, md: 48, lg: 96, xl: 160 }[x.size] }}>{x.divider && <Container className="flex h-full items-center"><hr className="w-full border-brand-200" /></Container>}</div>; }
     case "video": { const x = (block as B<"video">).data; if (!x.videoId || !videoIdOk(x.provider, x.videoId)) return null;

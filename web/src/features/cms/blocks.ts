@@ -50,7 +50,7 @@ export const blockData = {
   }),
   projects: z.object({ heading: t(160), intro: t(400), limit: z.number().int().min(1).max(12).default(3) }),
   faq: z.object({ heading: t(160), items: item({ question: t(200), answer: richTextSchema }, 30) }),
-  gallery: z.object({ heading: t(160), columns: z.enum(["2", "3", "4"]).default("3"), items: item({ image: imageSchema.default({ media: null, alt: "" }) }, 30) }),
+  gallery: z.object({ heading: t(160), intro: t(400), columns: z.enum(["2", "3", "4"]).default("3"), frame: z.boolean().default(false), items: item({ image: imageSchema.default({ media: null, alt: "" }), caption: t(120), category: t(40) }, 40) }),
   lead_form: z.object({ heading: t(160), body: t(400), submitLabel: t(40), successMessage: t(300), showContact: z.boolean().default(false) }),
   spacer: z.object({ size: z.enum(["sm", "md", "lg", "xl"]).default("md"), divider: z.boolean().default(false) }),
   video: z
