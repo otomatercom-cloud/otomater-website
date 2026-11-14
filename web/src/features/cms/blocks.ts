@@ -8,7 +8,7 @@ const item = <T extends z.ZodRawShape>(shape: T, max = 24) => z.array(z.object(s
 
 export const BLOCK_TYPES = [
   "hero", "richtext", "image_text", "cta", "cards", "stats", "logos", "testimonials",
-  "projects", "faq", "gallery", "lead_form", "spacer", "video", "automation",
+  "projects", "faq", "gallery", "lead_form", "spacer", "video", "automation", "automation_demo",
 ] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
 
@@ -28,6 +28,10 @@ export const blockData = {
   cards: z.object({
     heading: t(160), intro: t(400), columns: z.enum(["2", "3", "4"]).default("3"), numbered: z.boolean().default(false),
     items: item({ icon: iconSchema, title: t(100), text: t(500), href: hrefSchema.default(""), tagline: t(80), accent, points: z.array(z.string().max(80)).max(6).default([]) }),
+  }),
+  automation_demo: z.object({
+    heading: t(160), intro: t(400), submitLabel: t(40), whatsappText: t(300),
+    steps: item({ label: t(40), caption: t(160) }, 4),
   }),
   automation: z.object({
     eyebrow: t(80), prefix: t(80), words: z.array(z.string().max(40)).max(8).default([]), subheading: t(400),
@@ -94,5 +98,5 @@ export const newKey = () => `b_${Math.random().toString(36).slice(2, 10)}`;
 export const BLOCK_LABELS: Record<BlockType, string> = {
   hero: "Hero / banner", richtext: "Heading & text", image_text: "Image with text", cta: "Call to action",
   cards: "Service / feature cards", stats: "Statistics", logos: "Logo strip", testimonials: "Testimonials",
-  projects: "Case-study cards", faq: "FAQ", gallery: "Gallery", lead_form: "Enquiry form", spacer: "Spacer / divider", video: "Video", automation: "Automation hero (typing + live diagram)",
+  projects: "Case-study cards", faq: "FAQ", gallery: "Gallery", lead_form: "Enquiry form", spacer: "Spacer / divider", video: "Video", automation: "Automation hero (typing + live diagram)", automation_demo: "Automation demo (try-it form + flow)",
 };

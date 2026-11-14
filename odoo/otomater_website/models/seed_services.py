@@ -33,9 +33,20 @@ SOLUTIONS = B("cards_solutions", "cards", {"heading": "Four solutions, one conne
     ncard("MessageCircle", "WhatsApp Business", "Engage at scale", "Run campaigns, chatbots and support conversations on WhatsApp from one dashboard.", ["Bulk campaigns", "Chatbot", "Template messages", "Two-way support"], "green"),
     ncard("Boxes", "ERP Solution", "Unify your operations", "One system for finance, inventory, HR and purchasing, so every team works from the same data.", ["Finance and accounting", "Inventory control", "HR and payroll", "Live dashboards"], "amber")]}, background="muted")
 
+DEMO = B("automation_demo_main", "automation_demo", {
+    "heading": "See how an enquiry moves through an automated setup",
+    "intro": "Enter your details and watch the flow. Step 1 saves your enquiry with us for real. The rest is a sample of what a connected setup does next.",
+    "submitLabel": "Try the automation",
+    "whatsappText": "Hi {name}, thanks for your enquiry with Otomater. We will call you shortly. (Sample automated reply)",
+    "steps": [{"label": "Enquiry captured", "caption": "Your details are saved and our team is notified."},
+              {"label": "WhatsApp reply", "caption": "A connected setup sends the first reply automatically."},
+              {"label": "CRM lead", "caption": "The enquiry becomes a lead card, assigned to the right person."},
+              {"label": "ERP order", "caption": "Once it is won, the order and invoice flow into the ERP."}]}, anchor="automation-demo")
+
 HOME = {"slug": "home", "name": "Home", "summary": "ERP solutions, custom software and digital marketing for growing businesses.", "blocks": [
     AUTOMATION,
     SOLUTIONS,
+    DEMO,
     cards("cards_services", "What we do", "Three connected services. Use one, or combine them.", [
         item("Boxes", "ERP Solutions", "Odoo implementation, custom modules, data migration and training, so one system runs sales, accounts, stock, HR and more.", "/erp-solutions"),
         item("Code2", "Software Development", "Web applications, customer and vendor portals, integrations and workflow automation built for your process.", "/software-development"),

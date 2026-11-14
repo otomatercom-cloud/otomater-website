@@ -12,6 +12,7 @@ import { Counter } from "./counter";
 import { HeroSlideshow } from "./hero-slideshow";
 import { AutomationDiagram, Typewriter } from "./automation";
 import { ACCENT } from "./accent";
+import { AutomationDemo } from "./automation-demo";
 import { RichText } from "./rich-text";
 
 type Ctx = { site: SiteData; pageSlug: string };
@@ -145,6 +146,9 @@ export function BlockView({ block, ctx }: { block: Block; ctx: Ctx }) {
           {it.href && <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent-700">Learn more <Icons.ArrowRight size={16} aria-hidden /></span>}</>;
         const cls = "relative block h-full rounded-[var(--radius-card)] border border-brand-100 bg-white p-7 shadow-soft transition-shadow hover:shadow-lg";
         return <Reveal key={i} delay={Math.min(i, 5) * 0.06}>{it.href ? <a href={it.href} className={cls} data-item={i} data-hover="lift">{inner}</a> : <div className={cls} data-item={i} data-hover="lift">{inner}</div>}</Reveal>; })}</div></Container></Section>; }
+    case "automation_demo": { const x = (block as B<"automation_demo">).data; const { leads } = ctx.site.settings; if (!x.steps.length) return null; return <Section block={block}><Container>
+      <Head heading={x.heading} intro={x.intro} d={d} />
+      <AutomationDemo submitLabel={x.submitLabel} whatsappText={x.whatsappText} steps={x.steps} consentText={leads.consentText} privacyHref={leads.privacyHref} sourcePage={`${ctx.pageSlug}#automation-demo`} /></Container></Section>; }
     case "automation": { const x = (block as B<"automation">).data; return (
       <section data-block={block.key} id={block.settings.anchor || undefined} className={cn("dark-surface relative overflow-hidden bg-brand-900 text-white", block.settings.hideOn.map((h) => HIDE[h]))}>
         <div aria-hidden className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(var(--color-brand-300)_1px,transparent_1px),linear-gradient(90deg,var(--color-brand-300)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_70%)]" />
